@@ -36,6 +36,12 @@ class TodoDB:
         res = c.fetchall()
         return res
 
+    def findTodos(self, task, date):
+        c = TodoDB.con.cursor()
+        c.execute(f"SELECT * FROM tasks WHERE todo_content LIKE '%{tasks}%' AND todo_date LIKE '{date}%'")
+        res = c.fetchall()
+        return res
+
     def insertTodo(self, values):
         c = TodoDB.con.cursor()
         c.execute('INSERT INTO tasks (todo_content, todo_date, todo_time, completed, reg_date)'
@@ -77,6 +83,12 @@ class TodoDB:
     def readUsers(self):
         c = TodoDB.con.cursor()
         c.execute('SELECT * FROM users')
+        res = c.fetchall()
+        return res
+
+    def findUserByName(self, name):
+        c = TodoDB.con.cursor()
+        c.execute(f"SELECT * FROM users WHERE user_name like '%{name}%'")
         res = c.fetchall()
         return res
 
