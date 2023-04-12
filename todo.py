@@ -1,4 +1,27 @@
 import sqlite3
+from dataclasses import dataclass
+
+
+@dataclass
+class Task:
+    id: int
+    todo_content: str
+    todo_date: str
+    todo_time: str
+    completed: int
+    reg_date: str
+
+@dataclass
+class User:
+    id: int
+    user_name: str
+    user_gender: str
+    user_id: str
+    user_pw: str
+    user_email: str
+    user_mobile: str
+    reg_date: str
+
 
 
 class TodoDB:

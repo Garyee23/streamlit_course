@@ -86,6 +86,7 @@ elif menu == '할일':
 
     st.subheader('할일입력')
 
+
     # 할일 양식
     # 내용, 날짜, 추가 버튼
     todo_content = st.text_input('할 일', placeholder='할 일을 입력하세요.')
@@ -124,6 +125,14 @@ elif menu == '할일':
 
     todos = db.readTodos()
     for todo in todos:
+        task = Task(
+            id=todo[0]
+            todo_content=todo[1]
+            todo_date=todo[2]
+            todo_time=todo[3]
+            completed=todo[4]
+            reg_date=todo[5]
+        )
         col1, col2, col3, col4, col5, col6 = st.columns([1,3,2,2,3,2])
         col1.checkbox(
             str(todo[0]),
