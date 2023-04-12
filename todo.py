@@ -32,6 +32,7 @@ class TodoDB:
     def connectToDatabase():
         try:
             TodoDB.con = sqlite3.connect('todo.db', check_same_thread=False)
+            TodoDB.con.row_factory=sqlite3.Row
             c = TodoDB.con.cursor()
             c.execute(f'CREATE TABLE IF NOT EXISTS tasks '
                       f'(id INTEGER PRIMARY KEY AUTOINCREMENT,'
