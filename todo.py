@@ -38,7 +38,7 @@ class TodoDB:
 
     def findTodos(self, task, date):
         c = TodoDB.con.cursor()
-        c.execute(f"SELECT * FROM tasks WHERE todo_content LIKE '%{tasks}%' AND todo_date LIKE '{date}%'")
+        c.execute(f"SELECT * FROM tasks WHERE todo_content LIKE '%{task}%' AND todo_date LIKE '{date}%'")
         res = c.fetchall()
         return res
 

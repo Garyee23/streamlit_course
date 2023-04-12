@@ -170,7 +170,7 @@ elif menu == '통계':
 
     col1, col2 = st.columns([5,5])
 
-    df_users = pd.DataFrame(users, columns=['id', '성명', '아이디', '비밀번호', '이메일', '휴대전화', '등록일시']).set_index('id')
+    df_users = pd.DataFrame(users, columns=['id', '성명', '성별', '아이디', '비밀번호', '이메일', '휴대전화', '등록일시']).set_index('id')
     df_todos = pd.DataFrame(todos, columns=['id','할일','날짜','시간','완료여부','등록일시']).set_index('id')
 
     with col1:
