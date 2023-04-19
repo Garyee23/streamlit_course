@@ -1,4 +1,5 @@
 import streamlit as st
+import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -7,7 +8,7 @@ import ssl
 ssl._create_default_https_context = ssl._create_unverified_context
 import matplotlib.font_manager as fm
 
-mnu = st.sidebar.selectbox('선택', options=['타이타닉 분석', '타이타닉 시각화1', '타이타닉 시각화2','기타 시각화'])
+mnu = st.sidebar.selectbox('선택', options=['타이타닉 분석', '타이타닉 시각화1', '타이타닉 시각화2', '기타 시각화', '시각화 연습'])
 
 titanic = sns.load_dataset('titanic')
 
@@ -27,8 +28,8 @@ if mnu == '타이타닉 분석':
     st.dataframe(titanic.describe(include='all'), use_container_width=True)
 
     st.text('객실 등급(pclass)에 따른 생존율 비교')
-    st.dataframe(titanic[['pclass', 'survived']].groupby(['pclass'], as_index=True).mean().sort_values(by='survived',
-                                                                                                   ascending=False))
+    st.dataframe(titanic[['pclass', 'survived']].groupby(['pclass'], as_index=True).mean().sort_values(by='survived',ascending=False))
+
     st.text('성별(sex)에 따른 생존율 비교')
     st.dataframe(titanic[["sex", "survived"]].groupby(['sex'], as_index=True).mean().sort_values(by='survived', ascending=False))
 
@@ -177,9 +178,9 @@ elif mnu == '기타 시각화':
     flights = sns.load_dataset('flights')
     st.dataframe(flights.head())
 
-    flights_pivot = flights.pivot(index='month', columns='year', values=' passengers')
+    flights_pivot = flights.pivot(index='month', columns='year', values='passengers')
     sns.set(rc={'figure.figsize': (12, 10)})
-    sns.heatmap(data=flights_pivot, cmap='hot')
+    sns.heatmap(data=flights_pivot, cmap='hot', annot=True, fmt="d", linewidths=.5) #히트맵 위에 탑승객 수 표시
     st.pyplot()
 
     st.text('라인플롯')
