@@ -249,7 +249,7 @@ elif mnu == '모델링':
     all_data['date'] = all_data['datetime'].apply(lambda x: x.split()[0])
     all_data['year'] = all_data['datetime'].apply(lambda x: x.split()[0].split('-')[0])
     all_data['month'] = all_data['datetime'].apply(lambda x: x.split()[0].split('-')[1])
-    all_data['hour'] = all_data['datetime'].apply(lambda x: x.split()[0].split(':')[0])
+    all_data['hour'] = all_data['datetime'].apply(lambda x: x.split()[1].split(':')[0])
     all_data['weekday'] = all_data['date'].apply(lambda x: datetime.strptime(x,'%Y-%m-%d').weekday())
     st.code('''
     # 날짜 피처 생성
@@ -285,7 +285,7 @@ elif mnu == '모델링':
     train = all_data[~pd.isnull(all_data['count'])]
     test = all_data[pd.isnull(all_data['count'])]
 
-    X_train = trian.drop(['count'], axis=1)
+    X_train = train.drop(['count'], axis=1)
     X_test = test.drop(['count'], axis=1)
     Y_train = train['count']
 
@@ -341,10 +341,10 @@ elif mnu == '모델링':
 
     from sklearn.linear_model import LinearRegression
 
-    linear_reg_model = LinearRegression
+    linear_reg_model = LinearRegression()
 
     log_y = np.log(Y_train)
-    linear_reg_model.fit(X_train, log_Y)
+    linear_reg_model.fit(X_train, log_y)
 
     st.code('''
     from sklearn.linear_model import LinearRegression
@@ -352,7 +352,7 @@ elif mnu == '모델링':
     linear_reg_model = LinearRegression
     
     log_y = np.log(Y_train) # 타깃값 로그 변환
-    linear_reg_model.fit(X_train, log_Y) # 모델 훈련
+    linear_reg_model.fit(X_train, log_y) # 모델 훈련
     ''')
     st.markdown('확실하게 짚어보고 갑시다.')
     st.markdown('---')
@@ -380,7 +380,7 @@ elif mnu == '모델링':
     st.write('1. 테스트 데이터로 예측한 결과를 이용해야 한다.')
     st.write('2. 예측한 값에 지수변환을 해줘야 한다.')
 
-    lineararg_preds = linear_reg_model(X_test)
+    lineararg_preds = linear_reg_model.predict(X_test)
     submission['count'] = np.exp(lineararg_preds)
     submission.to_csv('submission.csv', index=False)
 
