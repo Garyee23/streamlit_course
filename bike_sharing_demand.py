@@ -313,4 +313,87 @@ elif mnu == '모델링':
             y_pred = np.exp((y_pred))
 
         log_true = np.nan_to_num(np.log(y_true+1))
+        log_pred = np.nan_to_num(np.log(y_pred+1))
+
+        output = np.sqrt(np.mean((log_true - log_pred)**2))
+        return output
+
+    st.code('''
+    import numpy as np
+
+    def rmsle(y_true, y_pred, convertExp=True):
+
+        if convertExp:
+            y_true = np.exp(y_true)
+            y_pred = np.exp((y_pred))
+
+        log_true = np.nan_to_num(np.log(y_true+1))
+        log_pred = np.nan_to_num(np.log(y_pred+1))
+        
+        output = np.sqrt(np.mean((log_true - log_pred)**2))
+        return output
+    ''')
+
+    st.markdown('#### 모델 훈련')
+    st.write('사이킷런이 제공하는 가장 간단한 선형 회귀 모델인 **LinearRegression 모델** 을 사용한다.')
+    st.write('[위키피디아: 선형회귀](https://ko.wikipedia.org/wiki/%EC%84%A0%ED%98%95_%ED%9A%8C%EA%B7%80)')
+    st.write('선형회귀는 값을 예측하는 경우 주로 사용된다.')
+
+    from sklearn.linear_model import LinearRegression
+
+    linear_reg_model = LinearRegression
+
+    log_y = np.log(Y_train)
+    linear_reg_model.fit(X_train, log_Y)
+
+    st.code('''
+    from sklearn.linear_model import LinearRegression
+    
+    linear_reg_model = LinearRegression
+    
+    log_y = np.log(Y_train) # 타깃값 로그 변환
+    linear_reg_model.fit(X_train, log_Y) # 모델 훈련
+    ''')
+    st.markdown('확실하게 짚어보고 갑시다.')
+    st.markdown('---')
+    st.markdown('**훈련 :** 피처(독립변수)와 타깃값(종속변수)이 주어졌을 때 최적의 가중치(회귀계수)를 찾는 과정')
+
+    st.markdown('')
+    st.markdown('**탐색적 데이터 분석 :** 예측에 도움이 될 피처를 추리고, 적절한 모델링 방법을 탐색하는 과정')
+    st.markdown('---')
+
+    st.markdown('#### 모델 성능 검증')
+
+    preds = linear_reg_model.predict(X_train)
+    rmsle_value = rmsle(log_y, preds, True)
+
+    st.code('''
+    preds = linear_reg_model.predict(X_train)
+    rmsle_value = rmsle(log_y, preds, True)
+    ''')
+
+    st.write(f'선형 회귀의 RMSLE 값: {rmsle_value:.4f}')
+
+    st.write('')
+    st.markdown('#### 예측 및 결과 제출')
+
+    st.write('1. 테스트 데이터로 예측한 결과를 이용해야 한다.')
+    st.write('2. 예측한 값에 지수변환을 해줘야 한다.')
+
+    lineararg_preds = linear_reg_model(X_test)
+    submission['count'] = np.exp(lineararg_preds)
+    submission.to_csv('submission.csv', index=False)
+
+    st.code('''
+    # 테스트 데이터로 예측
+    lineararg_preds = linear_reg_model(X_test)
+    # 지수 변환
+    submission['count'] = np.exp(lineararg_preds)
+    # 파일로 저장
+    submission.to_csv('submission.csv', index=False)
+    ''')
+
+    df_s = pd.read_csv('submission.csv')
+    st.dataframe(df_s)
+
 
